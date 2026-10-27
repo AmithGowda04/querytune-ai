@@ -3,7 +3,7 @@
 Resume file. Read this first in any new session. Source of truth for status.
 
 ## Current status
-- Stage 0: WRITTEN, NOT FULLY VERIFIED (exit condition 'pytest runs' still unmet)
+- Stage 0: CLOSED BY OWNER DECISION, but 'pytest runs' still UNVERIFIED (no network in sandbox). Pins pending.
   - [x] 0a layout, .gitignore, .env.example, LICENSE
   - [~] 0b requirements.txt (UNPINNED) + trivial pytest test. Written, NOT run
         under pytest (sandbox had no network, pytest not installable). The 3 test
@@ -11,11 +11,21 @@ Resume file. Read this first in any new session. Source of truth for status.
   - [x] 0c CI workflow written (.github/workflows/tests.yml). YAML parses; CI NOT run
         (no GitHub repo yet).
 
+## Stage 1 (analyzer, corpus first)
+  - [x] 1a corpus design: docs/corpus_design.md, corpus/schema_tsql.sql,
+        corpus/taxonomy.json (12 rule ids), empty corpus/expected.json,
+        tests/test_corpus.py (checked by calling test functions directly, not pytest).
+  - [ ] 1b planted queries (~30, 2-3 per rule, ~2/3 dev, ~1/3 heldout) + expected.json entries
+  - [ ] 1c clean queries (~30, >=half near-misses) + expected.json entries
+  - [ ] 1d freeze: commit + tag corpus-frozen
+  - [ ] 1e rule framework (analyzer/parser.py, rules.py; dialect config object) - needs sqlglot
+  - [ ] 1f rules, tuned on dev only; 1g evaluation script + report (needs sqlglot)
+  Optional high-value: owner writes ~10 held-out queries independently.
+
 ## Next action
-1. OWNER: on own machine: python -m venv .venv; activate; pip install -r requirements.txt;
-   pytest; pip freeze. Paste output. Assistant pins requirements.txt, marks 0b and
-   Stage 0 done. (Or enable sandbox network and the assistant does it.)
-2. Then start Stage 1, step 1a: build the evaluation corpus FIRST (before any rules).
+1. Do 1b. Do NOT write any rule code before 1d.
+2. OWNER (any time): run pytest + pip freeze locally and paste output so pins/Stage 0 can be closed.
+   1e-1g are untestable in a sandbox without network (sqlglot).
 
 ## Delivery
 No GitHub repo yet (owner creates an EMPTY repo at the end). Work is delivered
@@ -61,3 +71,4 @@ To resume in a new session: upload the zip, unzip, read this file.
 - 0b written: requirements.txt (unpinned), pytest.ini, tests/test_smoke.py. Sandbox
   network disabled (pip: Name or service not known), so pytest NOT run. Pins pending.
 - 0c written: CI workflow (checkout, python 3.12, pip install, pytest -q). YAML parse-checked only.
+- Stage 0 closed by owner decision (pytest unverified). 1a done: corpus design, schema, taxonomy, corpus test.

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "note": "Problem taxonomy used to PLANT problems in the corpus. Rule implementations (Stage 1c+) must use these ids. 'kind': syntactic = needs SQL only; schema = needs pasted DDL.",
+  "rules": [
+    {"id": "QT001", "name": "select_star",               "kind": "syntactic", "severity": "low"},
+    {"id": "QT002", "name": "function_on_filtered_column","kind": "syntactic", "severity": "high"},
+    {"id": "QT003", "name": "not_in_subquery",           "kind": "syntactic", "severity": "high"},
+    {"id": "QT004", "name": "distinct_with_join",        "kind": "syntactic", "severity": "medium"},
+    {"id": "QT005", "name": "or_across_columns",         "kind": "syntactic", "severity": "medium"},
+    {"id": "QT006", "name": "scalar_subquery_in_select", "kind": "syntactic", "severity": "medium"},
+    {"id": "QT007", "name": "order_by_in_subquery",      "kind": "syntactic", "severity": "low"},
+    {"id": "QT008", "name": "leading_wildcard_like",     "kind": "syntactic", "severity": "medium"},
+    {"id": "QT009", "name": "missing_join_condition",    "kind": "syntactic", "severity": "high"},
+    {"id": "QT101", "name": "implicit_conversion",       "kind": "schema",    "severity": "high"},
+    {"id": "QT102", "name": "not_in_nullable_column",    "kind": "schema",    "severity": "high"},
+    {"id": "QT103", "name": "join_on_non_unique_key",    "kind": "schema",    "severity": "high"}
+  ]
+}
