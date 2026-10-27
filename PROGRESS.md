@@ -5,11 +5,16 @@ Resume file. Read this first in any new session. Source of truth for status.
 ## Current status
 - Stage 0: IN PROGRESS
   - [x] 0a layout, .gitignore, .env.example, LICENSE
-  - [ ] 0b requirements.txt (pinned) + trivial pytest test
+  - [~] 0b requirements.txt (UNPINNED) + trivial pytest test. Written, NOT run
+        under pytest (sandbox had no network, pytest not installable). The 3 test
+        functions were called directly with plain python3 and passed.
   - [ ] 0c CI workflow + finalise PROGRESS.md + commit
 
 ## Next action
-Do 0b.
+1. OWNER: on own machine run: python -m venv .venv; activate; pip install -r requirements.txt; pytest; pip freeze
+   and paste the output. Then pin requirements.txt from it and mark 0b done.
+   (Or enable sandbox network access and the assistant does it.)
+2. Do 0c: CI workflow (.github/workflows/tests.yml) + finalise this file.
 
 ## Delivery
 No GitHub repo yet (owner creates an EMPTY repo at the end). Work is delivered
@@ -52,3 +57,5 @@ To resume in a new session: upload the zip, unzip, read this file.
 
 ## Log
 - 0a done: folder created from empty, layout per handoff section 4.
+- 0b written: requirements.txt (unpinned), pytest.ini, tests/test_smoke.py. Sandbox
+  network disabled (pip: Name or service not known), so pytest NOT run. Pins pending.
