@@ -29,15 +29,22 @@ Resume file. Read this first in any new session. Source of truth for status.
         (22 held-out files hashed; test_heldout_files_unchanged enforces). 30 planted (12 heldout),
         32 clean (10 heldout). No owner-written queries were added (single-author corpus).
         Any post-freeze corpus change must be listed in corpus/FROZEN.md.
-  - [ ] 1e rule framework (analyzer/parser.py, rules.py; dialect config object) - needs sqlglot
+  - [x] 1e-i analyzer/dialects.py: Dialect config (tsql / postgres / other+sub-dialect), status labels,
+        dialect-mismatch warning (regex, literals/comments stripped). Pure Python, no sqlglot.
+        tests/test_dialects.py (9 tests, called directly, NOT pytest; uses DEV corpus only).
+        sqlglot_read strings ("tsql","postgres","mysql"...) are UNVERIFIED until sqlglot runs.
+  - [ ] 1e-ii analyzer/rules.py (Rule, Finding, RuleRegistry: validation, dialect/kind/schema selection,
+        on/off switches, per-rule exception isolation) + analyzer/parser.py analyze() with INJECTED
+        parse_fn, input-size cap, parse failure -> status "not_analysed". Testable with fakes.
+  - [ ] 1e-iii evaluation scorer (Wilson 95% CI, catch rate, false-alarm rate, per-rule recall,
+        parse-success rate, dev/heldout split) tested with fake analyzer outputs.
   - [ ] 1f rules, tuned on dev only; 1g evaluation script + report (needs sqlglot)
   Optional high-value: owner writes ~10 held-out queries independently.
 
 ## Next action
-1. Stage 1e needs sqlglot. Sandbox has no network, so 1e-1g can only be WRITTEN, not run.
-   Choose: (a) owner runs pytest/pip freeze locally and enables/pastes results, or
-   (b) enable sandbox network. Until then, safe work: 1e rule framework + dialect config object
-   written against sqlglot's documented API, clearly marked UNTESTED.
+1. Do 1e-ii then 1e-iii (all testable without sqlglot). Sandbox network is OFF (DNS fails for pypi.org;
+   no proxy, no cached wheels); owner cannot run locally now. 1f (rules) and 1g (real evaluation)
+   need sqlglot: write only when it is available, or write clearly marked UNTESTED.
 2. At first real parse (owner machine or networked sandbox): parse every corpus query with
    read="tsql"; report failures; fix invalid T-SQL and disclose in corpus/FROZEN.md.
 3. Rules may be tuned on dev only. Do not open held-out files for rule design.
@@ -90,3 +97,4 @@ To resume in a new session: upload the zip, unzip, read this file.
 - 1b done: 30 planted queries, taxonomy descriptions, expected.json (corpus test passed via direct call).
 - 1c done: 32 clean queries (29 near-miss), balance test added.
 - 1d done: corpus frozen, tagged corpus-frozen, held-out hashes enforced by test.
+- 1e-i done: dialect config + mismatch warning, 9 tests passed via direct calls. Network re-checked: still no route to PyPI.
