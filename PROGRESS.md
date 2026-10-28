@@ -112,3 +112,4 @@ To resume in a new session: upload the zip, unzip, read this file.
 - 1e-i done: dialect config + mismatch warning, 9 tests passed via direct calls. Network re-checked: still no route to PyPI.
 - 1e-ii done: rule framework + analyze() with injected parser; 17 new tests, 34 total, all passed via direct calls.
 - 1e-iii done: evaluation scorer, 10 tests; 44 total passed via direct calls. Stage 1 blocked on sqlglot.
+- Docs: PRIVACY.md (DRAFT, requirements for final code) and README.md (status table, limits, no results claimed) written.
