@@ -33,16 +33,20 @@ Resume file. Read this first in any new session. Source of truth for status.
         dialect-mismatch warning (regex, literals/comments stripped). Pure Python, no sqlglot.
         tests/test_dialects.py (9 tests, called directly, NOT pytest; uses DEV corpus only).
         sqlglot_read strings ("tsql","postgres","mysql"...) are UNVERIFIED until sqlglot runs.
-  - [ ] 1e-ii analyzer/rules.py (Rule, Finding, RuleRegistry: validation, dialect/kind/schema selection,
-        on/off switches, per-rule exception isolation) + analyzer/parser.py analyze() with INJECTED
-        parse_fn, input-size cap, parse failure -> status "not_analysed". Testable with fakes.
+  - [x] 1e-ii analyzer/rules.py (Rule/Finding/Context/RuleRegistry; DEFAULT_REGISTRY is EMPTY until 1f)
+        + analyzer/parser.py analyze() with INJECTED parse_fn(sql, sqlglot_read_name) -> tree.
+        Behaviour: empty/oversized (20,000 chars) input -> not_analysed; parse exception -> not_analysed
+        (never reported as clean); rule crash/misbehaviour isolated into rule_errors (message holds only
+        the exception type, no query text); select() honours dialect kinds, schema availability,
+        on/off switches, off-by-default rules; unknown ids raise. "analysed + no findings" = no rule fired.
+        tests/test_rules_engine.py: 17 tests, all earlier suites re-run (17), all called DIRECTLY not pytest.
   - [ ] 1e-iii evaluation scorer (Wilson 95% CI, catch rate, false-alarm rate, per-rule recall,
         parse-success rate, dev/heldout split) tested with fake analyzer outputs.
   - [ ] 1f rules, tuned on dev only; 1g evaluation script + report (needs sqlglot)
   Optional high-value: owner writes ~10 held-out queries independently.
 
 ## Next action
-1. Do 1e-ii then 1e-iii (all testable without sqlglot). Sandbox network is OFF (DNS fails for pypi.org;
+1. Do 1e-iii (evaluation scorer; testable without sqlglot). Sandbox network is OFF (DNS fails for pypi.org;
    no proxy, no cached wheels); owner cannot run locally now. 1f (rules) and 1g (real evaluation)
    need sqlglot: write only when it is available, or write clearly marked UNTESTED.
 2. At first real parse (owner machine or networked sandbox): parse every corpus query with
@@ -98,3 +102,4 @@ To resume in a new session: upload the zip, unzip, read this file.
 - 1c done: 32 clean queries (29 near-miss), balance test added.
 - 1d done: corpus frozen, tagged corpus-frozen, held-out hashes enforced by test.
 - 1e-i done: dialect config + mismatch warning, 9 tests passed via direct calls. Network re-checked: still no route to PyPI.
+- 1e-ii done: rule framework + analyze() with injected parser; 17 new tests, 34 total, all passed via direct calls.
