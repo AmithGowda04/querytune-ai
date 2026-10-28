@@ -15,7 +15,10 @@ Resume file. Read this first in any new session. Source of truth for status.
   - [x] 1a corpus design: docs/corpus_design.md, corpus/schema_tsql.sql,
         corpus/taxonomy.json (12 rule ids), empty corpus/expected.json,
         tests/test_corpus.py (checked by calling test functions directly, not pytest).
-  - [ ] 1b planted queries (~30, 2-3 per rule, ~2/3 dev, ~1/3 heldout) + expected.json entries
+  - [x] 1b 30 planted queries (P001-P030) + expected.json. 18 dev / 12 heldout.
+        taxonomy.json now has a precise 'description' per rule (defines what is planted).
+        T-SQL syntax NOT machine-validated (no sqlglot/SQL Server in sandbox); validate at 1e.
+        QT102 queries expect ["QT003","QT102"] (QT102 fires in addition to QT003).
   - [ ] 1c clean queries (~30, >=half near-misses) + expected.json entries
   - [ ] 1d freeze: commit + tag corpus-frozen
   - [ ] 1e rule framework (analyzer/parser.py, rules.py; dialect config object) - needs sqlglot
@@ -23,7 +26,7 @@ Resume file. Read this first in any new session. Source of truth for status.
   Optional high-value: owner writes ~10 held-out queries independently.
 
 ## Next action
-1. Do 1b. Do NOT write any rule code before 1d.
+1. Do 1c (clean queries, >=half near-misses). Do NOT write any rule code before 1d.
 2. OWNER (any time): run pytest + pip freeze locally and paste output so pins/Stage 0 can be closed.
    1e-1g are untestable in a sandbox without network (sqlglot).
 
@@ -72,3 +75,4 @@ To resume in a new session: upload the zip, unzip, read this file.
   network disabled (pip: Name or service not known), so pytest NOT run. Pins pending.
 - 0c written: CI workflow (checkout, python 3.12, pip install, pytest -q). YAML parse-checked only.
 - Stage 0 closed by owner decision (pytest unverified). 1a done: corpus design, schema, taxonomy, corpus test.
+- 1b done: 30 planted queries, taxonomy descriptions, expected.json (corpus test passed via direct call).

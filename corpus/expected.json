@@ -1,4 +1,307 @@
 {
   "version": 1,
-  "queries": []
+  "queries": [
+    {
+      "file": "planted/P001_select_star.sql",
+      "label": "planted",
+      "rules": [
+        "QT001"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "SELECT * from one table"
+    },
+    {
+      "file": "planted/P002_select_star.sql",
+      "label": "planted",
+      "rules": [
+        "QT001"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "SELECT * across a join"
+    },
+    {
+      "file": "planted/P003_select_star.sql",
+      "label": "planted",
+      "rules": [
+        "QT001"
+      ],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "SELECT * with TOP"
+    },
+    {
+      "file": "planted/P004_function_on_column.sql",
+      "label": "planted",
+      "rules": [
+        "QT002"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "YEAR() on date column"
+    },
+    {
+      "file": "planted/P005_function_on_column.sql",
+      "label": "planted",
+      "rules": [
+        "QT002"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "UPPER() on text column"
+    },
+    {
+      "file": "planted/P006_function_on_column.sql",
+      "label": "planted",
+      "rules": [
+        "QT002"
+      ],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "CONVERT() on date column"
+    },
+    {
+      "file": "planted/P007_not_in_subquery.sql",
+      "label": "planted",
+      "rules": [
+        "QT003"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "NOT IN over NOT NULL column"
+    },
+    {
+      "file": "planted/P008_not_in_subquery.sql",
+      "label": "planted",
+      "rules": [
+        "QT003"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "NOT IN with filtered subquery, NOT NULL column"
+    },
+    {
+      "file": "planted/P009_not_in_subquery.sql",
+      "label": "planted",
+      "rules": [
+        "QT003"
+      ],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "NOT IN over NOT NULL column"
+    },
+    {
+      "file": "planted/P010_distinct_with_join.sql",
+      "label": "planted",
+      "rules": [
+        "QT004"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "DISTINCT hides one-to-many join"
+    },
+    {
+      "file": "planted/P011_distinct_with_join.sql",
+      "label": "planted",
+      "rules": [
+        "QT004"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "DISTINCT hides join duplicates, with filter"
+    },
+    {
+      "file": "planted/P012_distinct_with_join.sql",
+      "label": "planted",
+      "rules": [
+        "QT004"
+      ],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "DISTINCT with INNER JOIN"
+    },
+    {
+      "file": "planted/P013_or_across_columns.sql",
+      "label": "planted",
+      "rules": [
+        "QT005"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "OR across Email and Phone"
+    },
+    {
+      "file": "planted/P014_or_across_columns.sql",
+      "label": "planted",
+      "rules": [
+        "QT005"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "OR across CustomerID and SalesPersonID"
+    },
+    {
+      "file": "planted/P015_or_across_columns.sql",
+      "label": "planted",
+      "rules": [
+        "QT005"
+      ],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "OR across Color and SubcategoryID"
+    },
+    {
+      "file": "planted/P016_scalar_subquery_in_select.sql",
+      "label": "planted",
+      "rules": [
+        "QT006"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "correlated SUM per customer"
+    },
+    {
+      "file": "planted/P017_scalar_subquery_in_select.sql",
+      "label": "planted",
+      "rules": [
+        "QT006"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "correlated COUNT per product"
+    },
+    {
+      "file": "planted/P018_scalar_subquery_in_select.sql",
+      "label": "planted",
+      "rules": [
+        "QT006"
+      ],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "correlated MAX per employee"
+    },
+    {
+      "file": "planted/P019_order_by_in_subquery.sql",
+      "label": "planted",
+      "rules": [
+        "QT007"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "TOP 100 PERCENT ORDER BY in derived table"
+    },
+    {
+      "file": "planted/P020_order_by_in_subquery.sql",
+      "label": "planted",
+      "rules": [
+        "QT007"
+      ],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "TOP 100 PERCENT ORDER BY in CTE"
+    },
+    {
+      "file": "planted/P021_leading_wildcard_like.sql",
+      "label": "planted",
+      "rules": [
+        "QT008"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "email domain search"
+    },
+    {
+      "file": "planted/P022_leading_wildcard_like.sql",
+      "label": "planted",
+      "rules": [
+        "QT008"
+      ],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "product name contains"
+    },
+    {
+      "file": "planted/P023_missing_join_condition.sql",
+      "label": "planted",
+      "rules": [
+        "QT009"
+      ],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "comma join, no linking predicate"
+    },
+    {
+      "file": "planted/P024_missing_join_condition.sql",
+      "label": "planted",
+      "rules": [
+        "QT009"
+      ],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "JOIN ON references only one table"
+    },
+    {
+      "file": "planted/P025_implicit_conversion.sql",
+      "label": "planted",
+      "rules": [
+        "QT101"
+      ],
+      "split": "dev",
+      "needs_schema": true,
+      "note": "VARCHAR column vs numeric literal"
+    },
+    {
+      "file": "planted/P026_implicit_conversion.sql",
+      "label": "planted",
+      "rules": [
+        "QT101"
+      ],
+      "split": "heldout",
+      "needs_schema": true,
+      "note": "VARCHAR column vs NVARCHAR literal"
+    },
+    {
+      "file": "planted/P027_not_in_nullable.sql",
+      "label": "planted",
+      "rules": [
+        "QT003",
+        "QT102"
+      ],
+      "split": "dev",
+      "needs_schema": true,
+      "note": "NOT IN over nullable ManagerID"
+    },
+    {
+      "file": "planted/P028_not_in_nullable.sql",
+      "label": "planted",
+      "rules": [
+        "QT003",
+        "QT102"
+      ],
+      "split": "heldout",
+      "needs_schema": true,
+      "note": "NOT IN over nullable SalesPersonID"
+    },
+    {
+      "file": "planted/P029_join_non_unique_key.sql",
+      "label": "planted",
+      "rules": [
+        "QT103"
+      ],
+      "split": "dev",
+      "needs_schema": true,
+      "note": "join on price columns"
+    },
+    {
+      "file": "planted/P030_join_non_unique_key.sql",
+      "label": "planted",
+      "rules": [
+        "QT103"
+      ],
+      "split": "heldout",
+      "needs_schema": true,
+      "note": "join on non-key ids"
+    }
+  ]
 }
