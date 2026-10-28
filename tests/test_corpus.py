@@ -46,3 +46,15 @@ def test_no_orphan_sql_files():
         for p in (CORPUS / sub).glob("*.sql")
     }
     assert on_disk == listed
+
+
+def test_corpus_balance():
+    _, queries = _load()
+    clean = [q for q in queries if q["label"] == "clean"]
+    if not clean:
+        return  # corpus still being built
+    near = [q for q in clean if q["note"].startswith("near-miss")]
+    assert len(near) * 2 >= len(clean), "need at least half of clean queries to be near-misses"
+    for label in ("planted", "clean"):
+        held = [q for q in queries if q["label"] == label and q["split"] == "heldout"]
+        assert held, f"no heldout {label} queries"

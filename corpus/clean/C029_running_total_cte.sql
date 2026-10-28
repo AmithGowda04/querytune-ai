@@ -1,0 +1,1 @@
+WITH monthly AS (SELECT YEAR(OrderDate) AS Yr, MONTH(OrderDate) AS Mo, SUM(TotalDue) AS Revenue FROM dbo.SalesOrderHeader GROUP BY YEAR(OrderDate), MONTH(OrderDate)) SELECT Yr, Mo, Revenue, SUM(Revenue) OVER (PARTITION BY Yr ORDER BY Mo) AS RunningTotal FROM monthly;

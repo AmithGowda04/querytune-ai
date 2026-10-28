@@ -1,0 +1,1 @@
+SELECT c.CustomerID, c.LastName, lo.OrderDate, lo.TotalDue FROM dbo.Customer c CROSS APPLY (SELECT TOP 1 h.OrderDate, h.TotalDue FROM dbo.SalesOrderHeader h WHERE h.CustomerID = c.CustomerID ORDER BY h.OrderDate DESC) AS lo;

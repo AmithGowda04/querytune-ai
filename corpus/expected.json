@@ -302,6 +302,262 @@
       "split": "heldout",
       "needs_schema": true,
       "note": "join on non-key ids"
+    },
+    {
+      "file": "clean/C001_plain_filter.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "plain: simple filtered select"
+    },
+    {
+      "file": "clean/C002_sargable_date_range.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT002: sargable date range instead of YEAR()"
+    },
+    {
+      "file": "clean/C003_exists_select_star.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT001: SELECT * inside EXISTS"
+    },
+    {
+      "file": "clean/C004_count_star.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT001: COUNT(*) is not SELECT *"
+    },
+    {
+      "file": "clean/C005_function_on_constant.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT002: function on constant side only"
+    },
+    {
+      "file": "clean/C006_function_in_groupby.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT002: function in SELECT/GROUP BY, not in filter"
+    },
+    {
+      "file": "clean/C007_not_in_literal_list.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT003: NOT IN literal list on NOT NULL column"
+    },
+    {
+      "file": "clean/C008_not_exists_nullable.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": true,
+      "note": "near-miss QT003/QT102: NOT EXISTS over nullable ManagerID"
+    },
+    {
+      "file": "clean/C009_left_join_anti.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "near-miss QT003: LEFT JOIN anti-join; one side unique"
+    },
+    {
+      "file": "clean/C010_distinct_single_table.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT004: DISTINCT without a join"
+    },
+    {
+      "file": "clean/C011_count_distinct_join.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT004: COUNT(DISTINCT) with a join"
+    },
+    {
+      "file": "clean/C012_or_same_column.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT005: OR on one column"
+    },
+    {
+      "file": "clean/C013_or_same_column_in_and.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "near-miss QT005: OR on one column inside AND"
+    },
+    {
+      "file": "clean/C014_or_range_same_column.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT005: OR of ranges on one column"
+    },
+    {
+      "file": "clean/C015_uncorrelated_scalar_select.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT006: uncorrelated scalar subquery in SELECT"
+    },
+    {
+      "file": "clean/C016_scalar_subquery_in_where.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT006: scalar subquery in WHERE, not SELECT list"
+    },
+    {
+      "file": "clean/C017_top_order_by.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT007: top-level TOP n with ORDER BY"
+    },
+    {
+      "file": "clean/C018_top_n_in_derived.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "near-miss QT007: real TOP n + ORDER BY in derived table"
+    },
+    {
+      "file": "clean/C019_offset_fetch.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT007: ORDER BY with OFFSET/FETCH paging"
+    },
+    {
+      "file": "clean/C020_trailing_wildcard.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT008: trailing wildcard only"
+    },
+    {
+      "file": "clean/C021_middle_wildcard.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "near-miss QT008: wildcard in the middle, not leading"
+    },
+    {
+      "file": "clean/C022_comma_join_with_predicate.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "near-miss QT009: old-style comma join WITH linking predicate"
+    },
+    {
+      "file": "clean/C023_explicit_cross_join.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "near-miss QT009 + parse-risk: deliberate CROSS JOIN to a VALUES grid"
+    },
+    {
+      "file": "clean/C024_varchar_vs_varchar.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": true,
+      "note": "near-miss QT101: VARCHAR column vs VARCHAR literal"
+    },
+    {
+      "file": "clean/C025_nvarchar_col_vs_varchar_literal.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": true,
+      "note": "near-miss QT101: NVARCHAR column vs varchar literal (literal converts, not column)"
+    },
+    {
+      "file": "clean/C026_datetime_vs_string_literal.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "heldout",
+      "needs_schema": true,
+      "note": "near-miss QT101: DATETIME column vs string literal (literal converts)"
+    },
+    {
+      "file": "clean/C027_legit_pairs_same_territory.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": true,
+      "note": "near-miss QT103 HAZARD: legitimate pair join; a naive rule flags it"
+    },
+    {
+      "file": "clean/C028_legit_colleagues.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "heldout",
+      "needs_schema": true,
+      "note": "near-miss QT103 HAZARD: legitimate same-department self-join; a naive rule flags it"
+    },
+    {
+      "file": "clean/C029_running_total_cte.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "near-miss QT002/QT007: functions in GROUP BY, ORDER BY inside OVER()"
+    },
+    {
+      "file": "clean/C030_union_all.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "plain: UNION ALL of two sources"
+    },
+    {
+      "file": "clean/C031_declare_variables.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "dev",
+      "needs_schema": false,
+      "note": "parse-risk: DECLARE variables used as parameters"
+    },
+    {
+      "file": "clean/C032_cross_apply_top1.sql",
+      "label": "clean",
+      "rules": [],
+      "split": "heldout",
+      "needs_schema": false,
+      "note": "near-miss QT009 + parse-risk: CROSS APPLY with TOP 1 (latest order per customer)"
     }
   ]
 }

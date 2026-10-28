@@ -19,14 +19,20 @@ Resume file. Read this first in any new session. Source of truth for status.
         taxonomy.json now has a precise 'description' per rule (defines what is planted).
         T-SQL syntax NOT machine-validated (no sqlglot/SQL Server in sandbox); validate at 1e.
         QT102 queries expect ["QT003","QT102"] (QT102 fires in addition to QT003).
-  - [ ] 1c clean queries (~30, >=half near-misses) + expected.json entries
+  - [x] 1c 32 clean queries (C001-C032) + expected.json. 22 dev / 10 heldout.
+        29 are near-misses, 2 plain, 2 tagged parse-risk (DECLARE, CROSS APPLY; also VALUES grid).
+        Corpus is ADVERSARIAL, not representative: false-alarm rate will read worse than on
+        real code. Report it with that caveat. Two QT103 HAZARD queries (C027 dev, C028 heldout)
+        are correct queries a naive QT103 will flag; that is deliberate.
+        tests/test_corpus.py has a balance check (run directly, not pytest).
   - [ ] 1d freeze: commit + tag corpus-frozen
   - [ ] 1e rule framework (analyzer/parser.py, rules.py; dialect config object) - needs sqlglot
   - [ ] 1f rules, tuned on dev only; 1g evaluation script + report (needs sqlglot)
   Optional high-value: owner writes ~10 held-out queries independently.
 
 ## Next action
-1. Do 1c (clean queries, >=half near-misses). Do NOT write any rule code before 1d.
+1. Do 1d: freeze (commit + tag corpus-frozen). Owner optional: add ~10 independent held-out
+   queries (planted AND plain realistic clean) BEFORE the tag. Do NOT write rule code before 1d.
 2. OWNER (any time): run pytest + pip freeze locally and paste output so pins/Stage 0 can be closed.
    1e-1g are untestable in a sandbox without network (sqlglot).
 
@@ -76,3 +82,4 @@ To resume in a new session: upload the zip, unzip, read this file.
 - 0c written: CI workflow (checkout, python 3.12, pip install, pytest -q). YAML parse-checked only.
 - Stage 0 closed by owner decision (pytest unverified). 1a done: corpus design, schema, taxonomy, corpus test.
 - 1b done: 30 planted queries, taxonomy descriptions, expected.json (corpus test passed via direct call).
+- 1c done: 32 clean queries (29 near-miss), balance test added.

@@ -1,0 +1,1 @@
+SELECT DISTINCT Color FROM dbo.Product WHERE Color IS NOT NULL;
