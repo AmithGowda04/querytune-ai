@@ -40,18 +40,26 @@ Resume file. Read this first in any new session. Source of truth for status.
         the exception type, no query text); select() honours dialect kinds, schema availability,
         on/off switches, off-by-default rules; unknown ids raise. "analysed + no findings" = no rule fired.
         tests/test_rules_engine.py: 17 tests, all earlier suites re-run (17), all called DIRECTLY not pytest.
-  - [ ] 1e-iii evaluation scorer (Wilson 95% CI, catch rate, false-alarm rate, per-rule recall,
-        parse-success rate, dev/heldout split) tested with fake analyzer outputs.
+  - [x] 1e-iii analyzer/evaluate.py: wilson(), Rate, score(), evaluate(), render_markdown().
+        Catch = all expected ids of scored kinds fire; not-analysed planted = miss; not-analysed clean
+        excluded from false-alarm denominator (reported separately); parse-success over all queries;
+        schema-only planted excluded in syntactic view; held-out needs confirm_heldout=True (speed bump).
+        tests/test_evaluate.py: 10 tests (incl. oracle/silent/noisy analyzers on the real DEV corpus).
+        Total 44 tests, all called DIRECTLY (not pytest).
   - [ ] 1f rules, tuned on dev only; 1g evaluation script + report (needs sqlglot)
   Optional high-value: owner writes ~10 held-out queries independently.
 
 ## Next action
-1. Do 1e-iii (evaluation scorer; testable without sqlglot). Sandbox network is OFF (DNS fails for pypi.org;
-   no proxy, no cached wheels); owner cannot run locally now. 1f (rules) and 1g (real evaluation)
-   need sqlglot: write only when it is available, or write clearly marked UNTESTED.
-2. At first real parse (owner machine or networked sandbox): parse every corpus query with
-   read="tsql"; report failures; fix invalid T-SQL and disclose in corpus/FROZEN.md.
-3. Rules may be tuned on dev only. Do not open held-out files for rule design.
+BLOCKED on sqlglot (sandbox DNS cannot reach PyPI; owner cannot run locally now).
+Everything in Stage 1 that does not need sqlglot is DONE (corpus, dialects, framework, scorer).
+Remaining and why it needs sqlglot:
+  - 1f rules: AST logic + tuning on dev needs real parses (node names unverified).
+  - 1g real evaluation: needs the rules + the real parse_fn(sql, read) -> sqlglot tree.
+  - first parse of all 62 corpus queries (may expose invalid T-SQL; fix + list in corpus/FROZEN.md).
+To unblock: enable package-registry network access for the sandbox (account setting), OR owner runs
+  pip install -r requirements.txt; pytest; pip freeze   and pastes output (+ corpus parse results).
+Then: pin requirements.txt, close Stage 0, do 1f/1g.
+Do NOT write 1f rules blind: they cannot be tuned or verified without parsing.
 
 ## Delivery
 No GitHub repo yet (owner creates an EMPTY repo at the end). Work is delivered
@@ -103,3 +111,4 @@ To resume in a new session: upload the zip, unzip, read this file.
 - 1d done: corpus frozen, tagged corpus-frozen, held-out hashes enforced by test.
 - 1e-i done: dialect config + mismatch warning, 9 tests passed via direct calls. Network re-checked: still no route to PyPI.
 - 1e-ii done: rule framework + analyze() with injected parser; 17 new tests, 34 total, all passed via direct calls.
+- 1e-iii done: evaluation scorer, 10 tests; 44 total passed via direct calls. Stage 1 blocked on sqlglot.
