@@ -58,3 +58,17 @@ def test_corpus_balance():
     for label in ("planted", "clean"):
         held = [q for q in queries if q["label"] == label and q["split"] == "heldout"]
         assert held, f"no heldout {label} queries"
+
+
+def test_heldout_files_unchanged():
+    import hashlib
+    _, queries = _load()
+    held = {q["file"] for q in queries if q["split"] == "heldout"}
+    recorded = {}
+    for line in (CORPUS / "HELDOUT.sha256").read_text().splitlines():
+        digest, name = line.split("  ", 1)
+        recorded[name] = digest
+    assert set(recorded) == held, "held-out set differs from HELDOUT.sha256"
+    for name, digest in recorded.items():
+        actual = hashlib.sha256((CORPUS / name).read_bytes()).hexdigest()
+        assert actual == digest, f"held-out file changed after freeze: {name} (disclose in corpus/FROZEN.md)"

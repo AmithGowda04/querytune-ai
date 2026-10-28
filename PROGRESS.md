@@ -25,16 +25,22 @@ Resume file. Read this first in any new session. Source of truth for status.
         real code. Report it with that caveat. Two QT103 HAZARD queries (C027 dev, C028 heldout)
         are correct queries a naive QT103 will flag; that is deliberate.
         tests/test_corpus.py has a balance check (run directly, not pytest).
-  - [ ] 1d freeze: commit + tag corpus-frozen
+  - [x] 1d FROZEN 2026-10-28. git tag corpus-frozen. corpus/FROZEN.md, corpus/HELDOUT.sha256
+        (22 held-out files hashed; test_heldout_files_unchanged enforces). 30 planted (12 heldout),
+        32 clean (10 heldout). No owner-written queries were added (single-author corpus).
+        Any post-freeze corpus change must be listed in corpus/FROZEN.md.
   - [ ] 1e rule framework (analyzer/parser.py, rules.py; dialect config object) - needs sqlglot
   - [ ] 1f rules, tuned on dev only; 1g evaluation script + report (needs sqlglot)
   Optional high-value: owner writes ~10 held-out queries independently.
 
 ## Next action
-1. Do 1d: freeze (commit + tag corpus-frozen). Owner optional: add ~10 independent held-out
-   queries (planted AND plain realistic clean) BEFORE the tag. Do NOT write rule code before 1d.
-2. OWNER (any time): run pytest + pip freeze locally and paste output so pins/Stage 0 can be closed.
-   1e-1g are untestable in a sandbox without network (sqlglot).
+1. Stage 1e needs sqlglot. Sandbox has no network, so 1e-1g can only be WRITTEN, not run.
+   Choose: (a) owner runs pytest/pip freeze locally and enables/pastes results, or
+   (b) enable sandbox network. Until then, safe work: 1e rule framework + dialect config object
+   written against sqlglot's documented API, clearly marked UNTESTED.
+2. At first real parse (owner machine or networked sandbox): parse every corpus query with
+   read="tsql"; report failures; fix invalid T-SQL and disclose in corpus/FROZEN.md.
+3. Rules may be tuned on dev only. Do not open held-out files for rule design.
 
 ## Delivery
 No GitHub repo yet (owner creates an EMPTY repo at the end). Work is delivered
@@ -83,3 +89,4 @@ To resume in a new session: upload the zip, unzip, read this file.
 - Stage 0 closed by owner decision (pytest unverified). 1a done: corpus design, schema, taxonomy, corpus test.
 - 1b done: 30 planted queries, taxonomy descriptions, expected.json (corpus test passed via direct call).
 - 1c done: 32 clean queries (29 near-miss), balance test added.
+- 1d done: corpus frozen, tagged corpus-frozen, held-out hashes enforced by test.
