@@ -113,3 +113,8 @@ To resume in a new session: upload the zip, unzip, read this file.
 - 1e-ii done: rule framework + analyze() with injected parser; 17 new tests, 34 total, all passed via direct calls.
 - 1e-iii done: evaluation scorer, 10 tests; 44 total passed via direct calls. Stage 1 blocked on sqlglot.
 - Docs: PRIVACY.md (DRAFT, requirements for final code) and README.md (status table, limits, no results claimed) written.
+- Stage 3 (partial, stdlib only): ai/scrub.py literal scrubber + tests/test_scrub.py (16 tests). Tokenizer-based;
+  keeps TOP/OFFSET/FETCH/LIMIT numbers, type args, LIKE wildcards; fails safe (ok=False) on unbalanced
+  quotes/backslash escapes; round-trip restore; collision-safe placeholders. Known gap: SELECT 1 becomes
+  SELECT __N1__ (still parses). Names/aliases/comments NOT scrubbed (stated in PRIVACY.md).
+  Total 60 tests, all called DIRECTLY (not pytest).
