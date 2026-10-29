@@ -126,3 +126,4 @@ To resume in a new session: upload the zip, unzip, read this file.
   confirmed (plan attributes can't be scrubbed reliably). AnthropicClient is UNTESTED (needs SDK+network; model name
   must be supplied, none guessed). tests: test_status (6), test_ai_client (21). Total 87 tests, called DIRECTLY not pytest.
   NOT measured: any real model accuracy (owner must run with a real key).
+- Stage 7 piece done early: analyzer/report.py (markdown change report: findings, original, rewrite + status + flags, changes, notes, 'What was NOT verified'; fence-safe; no perf numbers) + tests/test_report.py (6). Total 93 direct-call tests.
