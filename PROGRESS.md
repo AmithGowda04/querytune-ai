@@ -49,17 +49,26 @@ Resume file. Read this first in any new session. Source of truth for status.
   - [ ] 1f rules, tuned on dev only; 1g evaluation script + report (needs sqlglot)
   Optional high-value: owner writes ~10 held-out queries independently.
 
-## Next action
-BLOCKED on sqlglot (sandbox DNS cannot reach PyPI; owner cannot run locally now).
-Everything in Stage 1 that does not need sqlglot is DONE (corpus, dialects, framework, scorer).
-Remaining and why it needs sqlglot:
-  - 1f rules: AST logic + tuning on dev needs real parses (node names unverified).
-  - 1g real evaluation: needs the rules + the real parse_fn(sql, read) -> sqlglot tree.
-  - first parse of all 62 corpus queries (may expose invalid T-SQL; fix + list in corpus/FROZEN.md).
-To unblock: enable package-registry network access for the sandbox (account setting), OR owner runs
-  pip install -r requirements.txt; pytest; pip freeze   and pastes output (+ corpus parse results).
-Then: pin requirements.txt, close Stage 0, do 1f/1g.
-Do NOT write 1f rules blind: they cannot be tuned or verified without parsing.
+## Next action (STATE AS OF LAST CHECKPOINT)
+All stdlib-only work is DONE. 93+8 = 101 direct-call tests pass (NOT run under pytest). Everything left needs
+packages or machines the build sandbox cannot reach (DNS for pypi.org fails; no proxy; no cached wheels):
+  1. Enable sandbox network (PyPI at least) OR owner runs: pip install -r requirements.txt; pytest; pip freeze
+     and pastes output. Then: pin requirements.txt, mark Stage 0/0b done, verify the CI.
+  2. First real parse of all 62 corpus queries with sqlglot read="tsql". Fix any invalid T-SQL; list every
+     change in corpus/FROZEN.md (update HELDOUT.sha256 for held-out files).
+  3. 1f: write rules QT001-QT009 (+schema QT101-QT103), TUNE ON DEV ONLY, register in DEFAULT_REGISTRY. Supply
+     real parse_fn(sql, read) using sqlglot. Verify the sqlglot dialect names used in analyzer/dialects.py.
+  4. 1g: run evaluate() on dev, then ONCE on held-out (confirm_heldout=True). Publish with CIs and misses.
+  5. Stage 2: sandbox/ datagen + DuckDB runner (needs duckdb): subprocess + timeout, external access off,
+     allowlist of tested T-SQL constructs, 'not exercised' detection, pairs differing only on NULL/duplicates.
+  6. Stage 4: app.py (streamlit): dialect dropdown + mismatch warning, scrub preview via build_request(),
+     send exact request via run_task(request=...), plain-text rendering of model output, input cap.
+     Deploy right after Stage 1 results if AI layer is not ready.
+  7. Owner-only: real-model accuracy run with own key (never report numbers not produced by a real run);
+     validate plans/ parsers against REAL SQL Server plans and STATISTICS output; Stage 6 local benchmark
+     (optional, 3-5 case studies); screenshots/video/portfolio card (Stage 7).
+  8. Owner: create EMPTY GitHub repo; push to a branch; wait for approval before touching portfolio main.
+Do NOT write 1f rules blind. Do NOT report any metric that was not produced by a real run.
 
 ## Delivery
 No GitHub repo yet (owner creates an EMPTY repo at the end). Work is delivered
@@ -127,3 +136,5 @@ To resume in a new session: upload the zip, unzip, read this file.
   must be supplied, none guessed). tests: test_status (6), test_ai_client (21). Total 87 tests, called DIRECTLY not pytest.
   NOT measured: any real model accuracy (owner must run with a real key).
 - Stage 7 piece done early: analyzer/report.py (markdown change report: findings, original, rewrite + status + flags, changes, notes, 'What was NOT verified'; fence-safe; no perf numbers) + tests/test_report.py (6). Total 93 direct-call tests.
+- Stage 5 (stdlib parts) done: plans/statistics_io.py, plans/sqlserver_plan.py (DOCTYPE/ENTITY rejected, size cap, never extracts parameter values, own-runtime-counters only) + tests/test_plans.py (8). FORMATS UNVERIFIED vs real SQL Server output.
+- Checkpoint: 101 direct-call tests passing; README status table updated.

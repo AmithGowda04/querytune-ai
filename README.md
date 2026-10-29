@@ -22,10 +22,14 @@ was measured.
 | Dialect config + dialect-mismatch warning | Built; tests passed |
 | Rule framework + `analyze()` (parser injected) | Built; tests passed with fake rules/parser |
 | Evaluation scorer (catch rate, false-alarm rate, Wilson CIs) | Built; tests passed with fake analyzers |
-| Actual analyzer rules (SQLGlot) | NOT built |
-| Test-data generator + DuckDB equivalence runner | NOT built |
-| AI layer, Streamlit UI, deployment | NOT built |
-| Local SQL Server benchmark | NOT built |
+| Literal scrubber (fails safe) | Built; tests passed |
+| AI layer: prompts, strict JSON validation, preview, status ladder (fake client only) | Built; tests passed. NOT tried with a real model |
+| Markdown change report | Built; tests passed |
+| Plan XML + STATISTICS IO/TIME parsers | Built; tested on hand-written samples only, NOT real SQL Server output |
+| Actual analyzer rules (SQLGlot) | NOT built (needs SQLGlot) |
+| Test-data generator + DuckDB equivalence runner | NOT built (needs DuckDB) |
+| Streamlit UI, deployment | NOT built (needs Streamlit) |
+| Local SQL Server benchmark | NOT built (needs SQL Server on the owner's machine) |
 
 "Tests passed" means the test functions were called directly with plain Python in a sandbox
 without package access. The full suite has not been run under `pytest` yet.
