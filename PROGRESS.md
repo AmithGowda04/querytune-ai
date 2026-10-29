@@ -118,3 +118,11 @@ To resume in a new session: upload the zip, unzip, read this file.
   quotes/backslash escapes; round-trip restore; collision-safe placeholders. Known gap: SELECT 1 becomes
   SELECT __N1__ (still parses). Names/aliases/comments NOT scrubbed (stated in PRIVACY.md).
   Total 60 tests, all called DIRECTLY (not pytest).
+- Stage 3 (stdlib parts) done: analyzer/status.py (4-status ladder; benchmark needs matched equivalence; 'different'
+  results force Proposed), ai/prompts.py (SQL as nonce-delimited DATA; system prompt forbids perf numbers),
+  ai/client.py (LLMClient protocol, FakeClient, strict JSON validation + caps, sanitize_text, perf-claim detector,
+  build_request preview == what is sent via request=, run_task: scrub -> call -> validate -> restore literals ->
+  re-parse rewrite via injected parse_fn -> status). Evidence (plan XML) is REFUSED while scrubbing is on unless
+  confirmed (plan attributes can't be scrubbed reliably). AnthropicClient is UNTESTED (needs SDK+network; model name
+  must be supplied, none guessed). tests: test_status (6), test_ai_client (21). Total 87 tests, called DIRECTLY not pytest.
+  NOT measured: any real model accuracy (owner must run with a real key).

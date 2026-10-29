@@ -5,3 +5,4 @@ sqlglot
 duckdb
 streamlit
 pytest
+anthropic   # only needed for AnthropicClient (untested in build sandbox)
