@@ -1,7 +1,13 @@
 # Privacy
 
-**Status: DRAFT.** The app is not built yet. This file states the design requirements the
-final code must satisfy. Re-verify every statement against the shipped code before publishing.
+**Status: DRAFT.** The current app (`app.py`) is rule-based and calls no AI model and no third-party service.
+The sections about model providers and scrubbing describe the planned AI mode, which is built as code but
+not wired into the app. Re-verify every statement against the shipped code before publishing.
+
+## Current version (no AI)
+The app analyses your text on the server with fixed rules. It makes no outbound request carrying your query,
+writes nothing to disk, and logs nothing in application code. The hosting platform (Streamlit Community
+Cloud) may still log requests and IP addresses under its own policy, which this app cannot control.
 
 ## What leaves the server, and where it goes
 When you use an AI feature (Debug, Explain, Optimise), the app sends the following to the model

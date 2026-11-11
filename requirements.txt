@@ -1,8 +1,1 @@
-# UNPINNED on purpose: the build sandbox had no network access, so versions
-# could not be resolved or verified. Pin from `pip freeze` on a machine that
-# ran `pytest` successfully (see PROGRESS.md).
-sqlglot
-duckdb
-streamlit
-pytest
-anthropic   # only needed for AnthropicClient (untested in build sandbox)
+streamlit>=1.30

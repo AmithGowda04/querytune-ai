@@ -1,56 +1,54 @@
 # QueryTune AI
 
-Debug, explain and optimise SQL, with honest limits. Portfolio project (Python, Streamlit,
-SQLGlot, DuckDB). **Status: work in progress. Nothing is deployed.**
+Rule-based SQL checks for data analysts, with explicit limits. Python, Streamlit, standard library only.
+**Status: first version built, not yet deployed.** No AI model is used in the app yet.
 
-Principle: do not just rewrite SQL. Explain each change, preserve the intended logic, validate
-where possible, and say exactly what was NOT verified. No performance gain is claimed unless it
-was measured.
+Principle: do not claim what was not verified. Every result says what it did NOT check.
 
-## Validation statuses (planned, shown on every suggestion)
-1. **Proposed**: model or rule output, nothing checked.
-2. **Syntax checked**: the rewrite parses in the selected dialect.
-3. **Matched on generated data**: original and rewrite returned the same results on generated
-   edge-case data in an in-memory DuckDB. Evidence, not proof.
-4. **Performance verified**: measured with the local SQL Server benchmark script. Never claimed
-   by the hosted app.
+## What it does today
+- Paste T-SQL (PostgreSQL and others: experimental) and get findings from 12 fixed rules:
+  9 that need only the SQL, and 3 that run only if you also paste `CREATE TABLE` statements.
+- Dialect dropdown with a mismatch warning (for example T-SQL pasted while PostgreSQL is selected).
+- Per-rule on/off switches, a "why this matters" bad/good example for each finding, and a markdown report.
+- Anything it cannot analyse is reported as "not analysed", never as clean.
+- No database connection, no query execution, nothing sent to any third party by the app.
 
-## What is built and tested so far
-| Part | State |
+## Results (corpus: 30 planted + 32 clean T-SQL queries, frozen, single author)
+| Split | Planted caught | False alarms on clean |
+|---|---|---|
+| Dev (rules were tuned on it, so NOT evidence) | 18/18 | 0/22 |
+| Held-out | 12/12 (95% CI 75.7-100%) | 0/10 (95% CI 0-27.8%) |
+
+Read these carefully: the same author wrote the queries and the rules; the sample is tiny; the clean set is
+adversarial; the corpus has never been run on SQL Server. A realistic probe outside the corpus found misses and
+likely false alarms: see `docs/KNOWN_LIMITATIONS.md`. Expect real-world accuracy to be lower.
+The held-out split was run twice (the first result was lost when the build sandbox reset and was regenerated
+with identical code and identical numbers); see `corpus/FROZEN.md`.
+
+## Not built / not verified
+| Item | State |
 |---|---|
-| Evaluation corpus: 30 planted + 32 clean T-SQL queries, frozen (tag `corpus-frozen`) | Written. NOT yet parsed by a real T-SQL parser |
-| Dialect config + dialect-mismatch warning | Built; tests passed |
-| Rule framework + `analyze()` (parser injected) | Built; tests passed with fake rules/parser |
-| Evaluation scorer (catch rate, false-alarm rate, Wilson CIs) | Built; tests passed with fake analyzers |
-| Literal scrubber (fails safe) | Built; tests passed |
-| AI layer: prompts, strict JSON validation, preview, status ladder (fake client only) | Built; tests passed. NOT tried with a real model |
-| Markdown change report | Built; tests passed |
-| Plan XML + STATISTICS IO/TIME parsers | Built; tested on hand-written samples only, NOT real SQL Server output |
-| Actual analyzer rules (SQLGlot) | NOT built (needs SQLGlot) |
-| Test-data generator + DuckDB equivalence runner | NOT built (needs DuckDB) |
-| Streamlit UI, deployment | NOT built (needs Streamlit) |
-| Local SQL Server benchmark | NOT built (needs SQL Server on the owner's machine) |
+| Real-Streamlit behaviour of `app.py` | Tested only against a stub module |
+| `pytest` and CI | Never run in the build sandbox (no network); first real run is on GitHub |
+| SQLGlot-based parsing | Not used. A hand-written lightweight parser is used instead (heuristic, not validating) |
+| AI layer (explain / debug / optimise), literal scrubber, prompts | Code and fake-client tests exist; NOT wired into the app; never run against a real model |
+| Test-data generator + DuckDB equivalence checking | Not built |
+| Execution-plan / STATISTICS parsers | Built; tested on hand-written samples only; not wired in |
+| Local SQL Server benchmark | Not built. "Performance verified" can therefore never appear |
 
-"Tests passed" means the test functions were called directly with plain Python in a sandbox
-without package access. The full suite has not been run under `pytest` yet.
-
-## Published results
-None yet. Catch and false-alarm rates will be published with confidence intervals once the
-analyzer exists and is run on the corpus. Misses will be listed.
-
-## Known limits (final README must keep these)
-- The corpus is single-author, and the same author designs the rules, so rates lean optimistic.
-- The clean set is adversarial (mostly near-misses), so its false-alarm rate is not a prediction
-  for real code.
-- n is about 30 per class; confidence intervals are wide.
-- Equivalence on generated data is not proof. T-SQL features that cannot be transpiled stay "Proposed".
-- Benchmark results (when they exist) come from one machine and one data distribution.
-- The hosted app has no database connection by design.
+## Limits
+See `docs/KNOWN_LIMITATIONS.md`. In short: heuristic rules with misses and false alarms; INSERT / UPDATE /
+DELETE / MERGE / EXEC / PIVOT are not analysed; a clean result is not a correctness or speed guarantee.
 
 ## Run the tests
 ```
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 pytest
 ```
 
-See `PRIVACY.md`, `PROGRESS.md`, `docs/corpus_design.md`, `corpus/FROZEN.md`.
+## Run the app
+```
+pip install -r requirements.txt
+streamlit run app.py
+```
+See `docs/DEPLOY.md`, `PRIVACY.md`, `PROGRESS.md`, `docs/corpus_design.md`, `corpus/FROZEN.md`.

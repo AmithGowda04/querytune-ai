@@ -51,7 +51,7 @@ def analyze(sql: str, dialect: Dialect, parse_fn: Callable,
         tree = parse_fn(sql, dialect.sqlglot_read)
     except Exception as e:
         msg = " ".join(str(e).split())[:200]
-        reason = f"could not parse as {dialect.label}: {type(e).__name__}" + (f" ({msg})" if msg else "")
+        reason = f"not analysed as {dialect.label}: {msg or type(e).__name__}"
         return _not_analysed(dialect, reason, warnings)
     if tree is None:
         return _not_analysed(dialect, "parser returned nothing", warnings)

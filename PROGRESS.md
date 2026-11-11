@@ -49,26 +49,16 @@ Resume file. Read this first in any new session. Source of truth for status.
   - [ ] 1f rules, tuned on dev only; 1g evaluation script + report (needs sqlglot)
   Optional high-value: owner writes ~10 held-out queries independently.
 
-## Next action (STATE AS OF LAST CHECKPOINT)
-All stdlib-only work is DONE. 93+8 = 101 direct-call tests pass (NOT run under pytest). Everything left needs
-packages or machines the build sandbox cannot reach (DNS for pypi.org fails; no proxy; no cached wheels):
-  1. Enable sandbox network (PyPI at least) OR owner runs: pip install -r requirements.txt; pytest; pip freeze
-     and pastes output. Then: pin requirements.txt, mark Stage 0/0b done, verify the CI.
-  2. First real parse of all 62 corpus queries with sqlglot read="tsql". Fix any invalid T-SQL; list every
-     change in corpus/FROZEN.md (update HELDOUT.sha256 for held-out files).
-  3. 1f: write rules QT001-QT009 (+schema QT101-QT103), TUNE ON DEV ONLY, register in DEFAULT_REGISTRY. Supply
-     real parse_fn(sql, read) using sqlglot. Verify the sqlglot dialect names used in analyzer/dialects.py.
-  4. 1g: run evaluate() on dev, then ONCE on held-out (confirm_heldout=True). Publish with CIs and misses.
-  5. Stage 2: sandbox/ datagen + DuckDB runner (needs duckdb): subprocess + timeout, external access off,
-     allowlist of tested T-SQL constructs, 'not exercised' detection, pairs differing only on NULL/duplicates.
-  6. Stage 4: app.py (streamlit): dialect dropdown + mismatch warning, scrub preview via build_request(),
-     send exact request via run_task(request=...), plain-text rendering of model output, input cap.
-     Deploy right after Stage 1 results if AI layer is not ready.
-  7. Owner-only: real-model accuracy run with own key (never report numbers not produced by a real run);
-     validate plans/ parsers against REAL SQL Server plans and STATISTICS output; Stage 6 local benchmark
-     (optional, 3-5 case studies); screenshots/video/portfolio card (Stage 7).
-  8. Owner: create EMPTY GitHub repo; push to a branch; wait for approval before touching portfolio main.
-Do NOT write 1f rules blind. Do NOT report any metric that was not produced by a real run.
+## Next action (STATE AT LAST CHECKPOINT)
+Built and tested (131 direct-call tests, NOT run under pytest): corpus, dialects, framework, scorer, scrubber, AI layer
+(fake client), status ladder, change report, plan parsers, stdlib lite parser + 12 rules, eval runner, Streamlit app
+(stub-tested), docs. Network is OFF in the build sandbox (SQLGlot/DuckDB/Streamlit/pytest never installed).
+Deploy path = Stages 0+1+4 on the lite analyzer. Remaining for deploy (OWNER): docs/DEPLOY.md (create empty repo,
+push, confirm CI green = first real pytest run, deploy on Streamlit Cloud, smoke-test the live app).
+Later (needs network or other machines): SQLGlot comparison, DuckDB equivalence (Stage 2), wire AI layer into app with
+a real key and measure real accuracy, validate plan parsers on real SQL Server output, SQL Server benchmark (optional),
+screenshots/video/portfolio card.
+LESSON (cost a rebuild): the sandbox filesystem can reset at any time. ZIP TO /mnt/user-data/outputs AFTER EVERY STEP.
 
 ## Delivery
 No GitHub repo yet (owner creates an EMPTY repo at the end). Work is delivered

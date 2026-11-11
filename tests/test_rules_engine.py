@@ -132,7 +132,7 @@ def test_parse_failure_is_not_analysed_not_clean():
     r = analyze("SELECT FROM", TSQL, bad_parse, registry=_reg())
     assert r.status == "not_analysed"
     assert r.findings == [] and r.rules_run == []
-    assert "could not parse as T-SQL" in r.reason
+    assert "not analysed as T-SQL" in r.reason and "Invalid expression" in r.reason
 
 
 def test_parser_returning_none_not_analysed():

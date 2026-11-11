@@ -17,4 +17,12 @@ Policy
 Known limits: single author, adversarial clean set (see docs/corpus_design.md).
 
 ## Post-freeze changes
-(none)
+(none to corpus files)
+
+## Held-out evaluation history (disclosure)
+- Run 1: after the rule code was committed and tagged, the held-out split was scored once: 12/12 planted caught,
+  0/10 clean flagged. The build sandbox was then reset; that tag and the result files were lost.
+- Run 2: the rules were rebuilt from the same source and the held-out split was scored again to regenerate
+  `docs/RESULTS_heldout.md`. The numbers were identical. No rule was changed after seeing held-out results.
+- The author of the corpus (an AI assistant) also wrote the rules, so the held-out split is held out from the
+  rule-tuning step only, not from the author's knowledge.
