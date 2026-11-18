@@ -128,3 +128,4 @@ To resume in a new session: upload the zip, unzip, read this file.
 - Stage 7 piece done early: analyzer/report.py (markdown change report: findings, original, rewrite + status + flags, changes, notes, 'What was NOT verified'; fence-safe; no perf numbers) + tests/test_report.py (6). Total 93 direct-call tests.
 - Stage 5 (stdlib parts) done: plans/statistics_io.py, plans/sqlserver_plan.py (DOCTYPE/ENTITY rejected, size cap, never extracts parameter values, own-runtime-counters only) + tests/test_plans.py (8). FORMATS UNVERIFIED vs real SQL Server output.
 - Checkpoint: 101 direct-call tests passing; README status table updated.
+- App fix: analysis kept in session_state so results survive reruns (download click, rule toggles); stale-input caption added; +1 stub test (132 total, direct calls, NOT pytest).

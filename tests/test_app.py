@@ -45,8 +45,8 @@ def test_not_analysed_and_report():
 
 
 class _FakeSt:
-    def __init__(self, press=True, sql="", ddl="", overrides=None):
-        self.session_state = {"sql": sql, "ddl": ddl}
+    def __init__(self, press=True, sql="", ddl="", overrides=None, session=None):
+        self.session_state = session if session is not None else {"sql": sql, "ddl": ddl}
         self.press, self.calls, self.overrides = press, [], overrides or {}
         self.sidebar = contextlib.nullcontext()
 
@@ -99,6 +99,18 @@ def _run_app(**kw):
         else:
             sys.modules["streamlit"] = saved
     return fake
+
+
+def test_results_survive_a_rerun_and_stale_inputs_are_flagged():
+    first = _run_app(sql="SELECT * FROM t")                       # press Analyze
+    session = first.session_state
+    assert "analysis" in session
+    again = _run_app(press=False, session=session)               # rerun, e.g. after a download click
+    assert again.named("download_button") and again.named("subheader")
+    assert not any("changed since" in c[1][0] for c in again.named("caption"))
+    session["sql"] = "SELECT a FROM t"                            # user edits the query
+    stale = _run_app(press=False, session=session)
+    assert any("changed since this analysis" in c[1][0] for c in stale.named("caption"))
 
 
 def test_app_runs_and_shows_findings_and_report():

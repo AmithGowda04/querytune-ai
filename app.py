@@ -46,13 +46,19 @@ def main():
         ddl = st.text_area("Table definitions (optional: CREATE TABLE statements; enables 3 extra rules)",
                            key="ddl", height=320, max_chars=logic.MAX_CHARS)
 
-    if not st.button("Analyze", type="primary"):
+    snapshot = (sql, ddl, dialect, sub, tuple(disabled))
+    if st.button("Analyze", type="primary"):
+        if not sql.strip():
+            st.warning("Paste a query first.")
+            return
+        # Kept in session memory only, so results survive reruns (download click, rule toggles).
+        st.session_state["analysis"] = (snapshot, logic.run_analysis(sql, dialect, sub, ddl, disabled))
+    saved = st.session_state.get("analysis")
+    if not saved:
         return
-    if not sql.strip():
-        st.warning("Paste a query first.")
-        return
-
-    a = logic.run_analysis(sql, dialect, sub, ddl, disabled)
+    snap, a = saved
+    if snap != snapshot:
+        st.caption("The query or settings changed since this analysis. Press Analyze to refresh it.")
     st.caption(f"Dialect: {a.dialect_label}. {a.dialect_status}.")
     for w in a.warnings:
         st.warning(w)
